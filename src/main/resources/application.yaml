@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Billing-job
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: mypassword
+
+
+  batch:
+    job:
+      name: mainJob
+#      enabled: false
