@@ -63,11 +63,15 @@ class BillingJobApplicationTests {
             throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
             JobParametersInvalidException, JobRestartException {
 
+        // Given
         JobParameters jobParameter = new JobParameters();
 
+        // When
         var result = jobLauncher.run(job, jobParameter);
-        //Assertions.assertTrue(capturedOutput.getOut().contains("Throwing exception"));
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
+        //Assertions.assertTrue(capturedOutput.getOut().contains("Throwing exception"));
     }
 
     @Test
@@ -75,11 +79,15 @@ class BillingJobApplicationTests {
             throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
             JobParametersInvalidException, JobRestartException, InterruptedException {
 
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/input11.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncher.run(job, parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(capturedOutput.getOut().contains("Getting job information src/main/resources/input11.csv"));
     }
@@ -88,11 +96,15 @@ class BillingJobApplicationTests {
     void testOutputWithTestUtils(CapturedOutput capturedOutput)
             throws Exception {
 
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/input11.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(capturedOutput.getOut().contains("Getting job information src/main/resources/input11.csv"));
     }
@@ -101,11 +113,15 @@ class BillingJobApplicationTests {
     void testOutputWithTestUtilsUniqueParams(CapturedOutput capturedOutput)
             throws Exception {
 
+        // Given
         var parameters = this.jobLauncherTestUtils.getUniqueJobParametersBuilder()
                 .addString("input.file","src/main/resources/input11.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(capturedOutput.getOut().contains("Getting job information src/main/resources/input11.csv"));
     }
@@ -113,11 +129,15 @@ class BillingJobApplicationTests {
     @Test
     void testOutputWithTestUtilsPath(CapturedOutput capturedOutput)
             throws Exception {
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/input2.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(Files.exists(Paths.get("staging", "input2.csv")));
     }
@@ -126,18 +146,28 @@ class BillingJobApplicationTests {
     void testOutputWithTestUtilsPathWithException(CapturedOutput capturedOutput)
             throws Exception {
 
+        // Given
+        // No parameters needed for this test
+
+        // When
         var result = jobLauncherTestUtils.launchJob();
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
     }
 
     @Test
     void testOutputWithItemReaderWriter(CapturedOutput capturedOutput)
             throws Exception {
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/telecom_data.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(Files.exists(Paths.get("staging", "telecom_data.csv")));
         Assertions.assertEquals(260, JdbcTestUtils.countRowsInTable(jdbcTemplate, "BILLING_DATA"));
@@ -147,11 +177,15 @@ class BillingJobApplicationTests {
     @Test
     void testOutputWithProcessorStep(CapturedOutput capturedOutput)
             throws Exception {
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/telecom_data.csv")
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
         Assertions.assertTrue(Files.exists(Paths.get("staging", "telecom_data.csv")));
         Assertions.assertEquals(260, JdbcTestUtils.countRowsInTable(jdbcTemplate, "BILLING_DATA"));
@@ -164,6 +198,7 @@ class BillingJobApplicationTests {
     @Test
     void testOutputWithSpel(CapturedOutput capturedOutput)
             throws Exception {
+        // Given
         var parameters = new JobParametersBuilder()
                 .addString("input.file","src/main/resources/telecom_data_next.csv")
                 .addString("output.file", "staging/processed-result-test.csv")
@@ -171,7 +206,10 @@ class BillingJobApplicationTests {
                 .addJobParameter("data.month", 3, Integer.class)
                 .toJobParameters();
 
+        // When
         var result = jobLauncherTestUtils.launchJob(parameters);
+
+        // Then
         Assertions.assertEquals(result.getStatus(), BatchStatus.COMPLETED);
     }
 

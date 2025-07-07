@@ -10,4 +10,4 @@ spring:
   batch:
     job:
       name: mainJob
-#      enabled: false
+      enabled: false
