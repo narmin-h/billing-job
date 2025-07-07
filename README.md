@@ -32,7 +32,7 @@ This application processes telecom billing data from CSV files, calculates billi
 - `src/main/resources/`
   - `application.yaml` - Application configuration
   - Sample CSV files for testing
-- `infra-1/`
+- `infra/`
   - `docker-compose.yaml` - Docker Compose configuration for PostgreSQL
 
 ## Setup Instructions
@@ -47,7 +47,7 @@ This application processes telecom billing data from CSV files, calculates billi
 1. Start the PostgreSQL database using Docker Compose:
 
 ```bash
-cd infra-1
+cd infra
 docker-compose up -d
 ```
 
